@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="aiden.reactcomplextreewidget.ReactComplexTreeWidget" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>React Complex Tree Widget</name>
+    <description>React Complex Tree Widget</description>
+    <icon/>
+    <properties>
+
+    
+        <!-- Service call properties -->
+
+        <propertyGroup caption="Service call">
+            <property key="dataChangeDateAttr" type="attribute">
+                <caption>Data change date</caption>
+                <description>Update the date in your logic to make the widget call the web service. (Pluggable widgets are rendered VERY often!)</description>
+                <attributeTypes>
+                    <attributeType name="DateTime"/>
+                </attributeTypes>
+            </property>
+            <property key="serviceUrl" type="expression">
+                <caption>URL for the service</caption>
+                <description>Only calls to the app backend are supported. So it must be in the format /rest/*yourServiceName*</description>
+                <returnType type="String" />
+            </property>
+
+        </propertyGroup>
+
+        <!-- Advanced properties -->
+
+        <propertyGroup caption="Advanced">
+            <property key="logToConsole" type="boolean" defaultValue="false">
+                <caption>Console logging</caption>
+                <description>Log widget progress to the console. Useful to get timing on data retrieval etc.</description>
+            </property>
+            <property key="dumpServiceResponseInConsole" type="boolean" defaultValue="false">
+                <caption>Dump service response</caption>
+                <description>Dump the response of the service call to the console</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
