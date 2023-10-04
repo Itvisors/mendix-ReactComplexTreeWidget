@@ -28,7 +28,8 @@
     "@mendix/pluggable-widgets-tools": "^9.24.0"
   },
   "dependencies": {
-    "classnames": "^2.2.6"
+    "classnames": "^2.2.6",
+    "react-complex-tree": "^2.2.2"
   },
   "resolutions": {
     "react": "18.2.0",
