@@ -57,7 +57,7 @@ export function getProperties(values, defaultProperties, target) {
 }
 
 // /**
-//  * @param {Object} values 
+//  * @param {Object} values
 //  * @returns {Problem[]} returns a list of problems.
 //  */
 // export function check(values) {
@@ -77,8 +77,8 @@ export function getProperties(values, defaultProperties, target) {
 // }
 
 // /**
-//  * @param {object} values 
-//  * @param {boolean} isDarkMode 
+//  * @param {object} values
+//  * @param {boolean} isDarkMode
 //  * @param {number[]} version
 //  * @returns {object}
 //  */

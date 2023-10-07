@@ -20,7 +20,8 @@ public class GetDataResponse
 	 */
 	public enum MemberNames
 	{
-		fullReload("fullReload");
+		fullReload("fullReload"),
+		nodeCount("nodeCount");
 
 		private final java.lang.String metaName;
 
@@ -148,6 +149,42 @@ public class GetDataResponse
 	public final void setfullReload(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean fullreload)
 	{
 		getMendixObject().setValue(context, MemberNames.fullReload.toString(), fullreload);
+	}
+
+	/**
+	 * @return value of nodeCount
+	 */
+	public final java.lang.Integer getnodeCount()
+	{
+		return getnodeCount(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of nodeCount
+	 */
+	public final java.lang.Integer getnodeCount(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Integer) getMendixObject().getValue(context, MemberNames.nodeCount.toString());
+	}
+
+	/**
+	 * Set value of nodeCount
+	 * @param nodecount
+	 */
+	public final void setnodeCount(java.lang.Integer nodecount)
+	{
+		setnodeCount(getContext(), nodecount);
+	}
+
+	/**
+	 * Set value of nodeCount
+	 * @param context
+	 * @param nodecount
+	 */
+	public final void setnodeCount(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer nodecount)
+	{
+		getMendixObject().setValue(context, MemberNames.nodeCount.toString(), nodecount);
 	}
 
 	/**

@@ -27,6 +27,21 @@ public class Microflows
 		params.put("Node", _node == null ? null : _node.getMendixObject());
 		Core.microflowCall("TestTreeWidget.ACT_Node_Delete").withParams(params).execute(context);
 	}
+	public static void aCT_Node_New(IContext context, testtreewidget.proxies.TestContainer _testContainer, testtreewidget.proxies.UserContext _userContext)
+	{
+		Map<java.lang.String, Object> params = new HashMap<>();
+		params.put("TestContainer", _testContainer == null ? null : _testContainer.getMendixObject());
+		params.put("UserContext", _userContext == null ? null : _userContext.getMendixObject());
+		Core.microflowCall("TestTreeWidget.ACT_Node_New").withParams(params).execute(context);
+	}
+	public static void aCT_Node_OnGridRowSelected(IContext context, testtreewidget.proxies.TestContainer _testContainer, testtreewidget.proxies.UserContext _userContext, testtreewidget.proxies.Node _node)
+	{
+		Map<java.lang.String, Object> params = new HashMap<>();
+		params.put("TestContainer", _testContainer == null ? null : _testContainer.getMendixObject());
+		params.put("UserContext", _userContext == null ? null : _userContext.getMendixObject());
+		params.put("Node", _node == null ? null : _node.getMendixObject());
+		Core.microflowCall("TestTreeWidget.ACT_Node_OnGridRowSelected").withParams(params).execute(context);
+	}
 	public static void aCT_Node_Save(IContext context, testtreewidget.proxies.Node _node)
 	{
 		Map<java.lang.String, Object> params = new HashMap<>();
