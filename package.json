@@ -10,7 +10,7 @@
   },
   "license": "Apache-2.0",
   "config": {
-    "projectPath": "./test",
+    "projectPath": "../test",
     "mendixHost": "http://localhost:8080",
     "developmentPort": 3000
   },
@@ -29,7 +29,6 @@
     "mendix-client": "^7.15.8"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
     "react-complex-tree": "^2.2.2"
   },
   "resolutions": {
