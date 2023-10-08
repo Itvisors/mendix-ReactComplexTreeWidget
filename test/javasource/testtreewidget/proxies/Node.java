@@ -23,6 +23,7 @@ public class Node
 		Name("Name"),
 		NodeSeqNbr("NodeSeqNbr"),
 		NodeID("NodeID"),
+		isRoot("isRoot"),
 		HasChildren("HasChildren"),
 		Children("Children"),
 		CanMove("CanMove"),
@@ -237,6 +238,42 @@ public class Node
 	public final void setNodeID(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String nodeid)
 	{
 		getMendixObject().setValue(context, MemberNames.NodeID.toString(), nodeid);
+	}
+
+	/**
+	 * @return value of isRoot
+	 */
+	public final java.lang.Boolean getisRoot()
+	{
+		return getisRoot(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of isRoot
+	 */
+	public final java.lang.Boolean getisRoot(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.isRoot.toString());
+	}
+
+	/**
+	 * Set value of isRoot
+	 * @param isroot
+	 */
+	public final void setisRoot(java.lang.Boolean isroot)
+	{
+		setisRoot(getContext(), isroot);
+	}
+
+	/**
+	 * Set value of isRoot
+	 * @param context
+	 * @param isroot
+	 */
+	public final void setisRoot(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean isroot)
+	{
+		getMendixObject().setValue(context, MemberNames.isRoot.toString(), isroot);
 	}
 
 	/**

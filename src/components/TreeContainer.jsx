@@ -1,14 +1,18 @@
-import { StaticTreeDataProvider, Tree, UncontrolledTreeEnvironment } from "react-complex-tree";
+import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
 import { createElement, useEffect, useState } from "react";
 
 export function TreeContainer({
     dataChangedDate,
     serviceUrl,
+    widgetName,
     logMessageToConsole,
     logToConsole,
     dumpServiceResponseInConsole
 }) {
     const [treeData, setTreeData] = useState(null);
+    const [focusedItem, setFocusedItem] = useState();
+    const [expandedItems, setExpandedItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
 
     useEffect(() => {
         const processDataFromService = data => {
@@ -76,19 +80,28 @@ export function TreeContainer({
         return <div className="react-complex-tree-widget nodata"></div>;
     }
 
-    if (logToConsole) {
-        logMessageToConsole("Render tree");
-        console.info(JSON.stringify(treeData));
-    }
+    const treeName = "tree-" + widgetName;
     return (
         <div className="react-complex-tree-widget">
-            <UncontrolledTreeEnvironment
-                dataProvider={new StaticTreeDataProvider(treeData, (item, data) => ({ ...item, data }))}
+            <ControlledTreeEnvironment
+                items={treeData}
                 getItemTitle={item => item.data}
-                viewState={{}}
+                viewState={{
+                    [treeName]: {
+                        focusedItem,
+                        expandedItems,
+                        selectedItems
+                    }
+                }}
+                onFocusItem={item => setFocusedItem(item.index)}
+                onExpandItem={item => setExpandedItems([...expandedItems, item.index])}
+                onCollapseItem={item =>
+                    setExpandedItems(expandedItems.filter(expandedItemIndex => expandedItemIndex !== item.index))
+                }
+                onSelectItems={items => setSelectedItems(items)}
             >
-                <Tree treeId="tree-1" rootItem="root" treeLabel="Tree Example" />
-            </UncontrolledTreeEnvironment>
+                <Tree treeId={treeName} rootItem="root" />
+            </ControlledTreeEnvironment>
         </div>
     );
 }

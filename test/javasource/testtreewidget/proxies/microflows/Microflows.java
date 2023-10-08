@@ -66,6 +66,12 @@ public class Microflows
 		params.put("TestContainer", _testContainer == null ? null : _testContainer.getMendixObject());
 		return (java.lang.Boolean) Core.microflowCall("TestTreeWidget.ACT_TestContainer_SaveNew").withParams(params).execute(context);
 	}
+	public static void aCT_TreeContainer_Delete(IContext context, testtreewidget.proxies.UserContext _userContext)
+	{
+		Map<java.lang.String, Object> params = new HashMap<>();
+		params.put("UserContext", _userContext == null ? null : _userContext.getMendixObject());
+		Core.microflowCall("TestTreeWidget.ACT_TreeContainer_Delete").withParams(params).execute(context);
+	}
 	public static testtreewidget.proxies.GetDataResponse pRS_UserContext_GetNodeList(IContext context)
 	{
 		Map<java.lang.String, Object> params = new HashMap<>();

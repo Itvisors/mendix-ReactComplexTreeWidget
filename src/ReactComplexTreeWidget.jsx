@@ -14,6 +14,7 @@ export function ReactComplexTreeWidget(props) {
         <TreeContainer
             dataChangedDate={props.dataChangeDateAttr.value}
             serviceUrl={props.serviceUrl.value}
+            widgetName={props.name}
             logMessageToConsole={logMessageToConsole}
             logToConsole={props.logToConsole}
             dumpServiceResponseInConsole={props.dumpServiceResponseInConsole}
