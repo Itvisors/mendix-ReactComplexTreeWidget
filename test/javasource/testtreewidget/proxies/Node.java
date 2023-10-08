@@ -21,6 +21,7 @@ public class Node
 	public enum MemberNames
 	{
 		Name("Name"),
+		NodeSeqNbr("NodeSeqNbr"),
 		NodeID("NodeID"),
 		HasChildren("HasChildren"),
 		Children("Children"),
@@ -167,9 +168,45 @@ public class Node
 	}
 
 	/**
+	 * @return value of NodeSeqNbr
+	 */
+	public final java.lang.Integer getNodeSeqNbr()
+	{
+		return getNodeSeqNbr(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of NodeSeqNbr
+	 */
+	public final java.lang.Integer getNodeSeqNbr(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Integer) getMendixObject().getValue(context, MemberNames.NodeSeqNbr.toString());
+	}
+
+	/**
+	 * Set value of NodeSeqNbr
+	 * @param nodeseqnbr
+	 */
+	public final void setNodeSeqNbr(java.lang.Integer nodeseqnbr)
+	{
+		setNodeSeqNbr(getContext(), nodeseqnbr);
+	}
+
+	/**
+	 * Set value of NodeSeqNbr
+	 * @param context
+	 * @param nodeseqnbr
+	 */
+	public final void setNodeSeqNbr(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer nodeseqnbr)
+	{
+		getMendixObject().setValue(context, MemberNames.NodeSeqNbr.toString(), nodeseqnbr);
+	}
+
+	/**
 	 * @return value of NodeID
 	 */
-	public final java.lang.Long getNodeID()
+	public final java.lang.String getNodeID()
 	{
 		return getNodeID(getContext());
 	}
@@ -178,16 +215,16 @@ public class Node
 	 * @param context
 	 * @return value of NodeID
 	 */
-	public final java.lang.Long getNodeID(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.lang.String getNodeID(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Long) getMendixObject().getValue(context, MemberNames.NodeID.toString());
+		return (java.lang.String) getMendixObject().getValue(context, MemberNames.NodeID.toString());
 	}
 
 	/**
 	 * Set value of NodeID
 	 * @param nodeid
 	 */
-	public final void setNodeID(java.lang.Long nodeid)
+	public final void setNodeID(java.lang.String nodeid)
 	{
 		setNodeID(getContext(), nodeid);
 	}
@@ -197,7 +234,7 @@ public class Node
 	 * @param context
 	 * @param nodeid
 	 */
-	public final void setNodeID(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Long nodeid)
+	public final void setNodeID(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String nodeid)
 	{
 		getMendixObject().setValue(context, MemberNames.NodeID.toString(), nodeid);
 	}

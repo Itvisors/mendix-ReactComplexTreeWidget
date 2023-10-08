@@ -6,5 +6,17 @@ import "./ui/ReactComplexTreeWidget.css";
 import "react-complex-tree/lib/style-modern.css";
 
 export function ReactComplexTreeWidget(props) {
-    return <TreeContainer />;
+    const logMessageToConsole = message => {
+        console.info(props.name + " " + new Date().toISOString() + " " + message);
+    };
+
+    return (
+        <TreeContainer
+            dataChangedDate={props.dataChangeDateAttr.value}
+            serviceUrl={props.serviceUrl.value}
+            logMessageToConsole={logMessageToConsole}
+            logToConsole={props.logToConsole}
+            dumpServiceResponseInConsole={props.dumpServiceResponseInConsole}
+        />
+    );
 }

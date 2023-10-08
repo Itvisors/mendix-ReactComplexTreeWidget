@@ -20,7 +20,7 @@ public class GetDataResponse
 	 */
 	public enum MemberNames
 	{
-		fullReload("fullReload"),
+		action("action"),
 		nodeCount("nodeCount");
 
 		private final java.lang.String metaName;
@@ -116,39 +116,48 @@ public class GetDataResponse
 		com.mendix.core.Core.delete(context, getMendixObject());
 	}
 	/**
-	 * @return value of fullReload
+	 * Set value of action
+	 * @param action
 	 */
-	public final java.lang.Boolean getfullReload()
+	public final testtreewidget.proxies.TreeWidgetAction getaction()
 	{
-		return getfullReload(getContext());
+		return getaction(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of fullReload
+	 * @return value of action
 	 */
-	public final java.lang.Boolean getfullReload(com.mendix.systemwideinterfaces.core.IContext context)
+	public final testtreewidget.proxies.TreeWidgetAction getaction(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.fullReload.toString());
+		Object obj = getMendixObject().getValue(context, MemberNames.action.toString());
+		if (obj == null) {
+			return null;
+		}
+		return testtreewidget.proxies.TreeWidgetAction.valueOf((java.lang.String) obj);
 	}
 
 	/**
-	 * Set value of fullReload
-	 * @param fullreload
+	 * Set value of action
+	 * @param action
 	 */
-	public final void setfullReload(java.lang.Boolean fullreload)
+	public final void setaction(testtreewidget.proxies.TreeWidgetAction action)
 	{
-		setfullReload(getContext(), fullreload);
+		setaction(getContext(), action);
 	}
 
 	/**
-	 * Set value of fullReload
+	 * Set value of action
 	 * @param context
-	 * @param fullreload
+	 * @param action
 	 */
-	public final void setfullReload(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean fullreload)
+	public final void setaction(com.mendix.systemwideinterfaces.core.IContext context, testtreewidget.proxies.TreeWidgetAction action)
 	{
-		getMendixObject().setValue(context, MemberNames.fullReload.toString(), fullreload);
+		if (action != null) {
+			getMendixObject().setValue(context, MemberNames.action.toString(), action.toString());
+		} else {
+			getMendixObject().setValue(context, MemberNames.action.toString(), null);
+		}
 	}
 
 	/**
