@@ -16,23 +16,51 @@ export function TreeContainer({
 
     useEffect(() => {
         const processDataFromService = data => {
+            const createTreeDataObject = () => {
+                const newTreeData = {};
+                for (const node of data.nodes) {
+                    newTreeData[node.index] = node;
+                    if (node.children) {
+                        newTreeData[node.index].children = node.children.split(",");
+                    }
+                }
+                return newTreeData;
+            };
+
+            const reloadTree = () => {
+                const newTreeData = createTreeDataObject();
+                setTreeData(newTreeData);
+            };
+
+            // const updateTree = () => {
+            //     const newTreeData = createTreeDataObject();
+            //     setTreeData(prevTreeData => ({
+            //         ...treeData,
+            //         newTreeData
+            //     }));
+            //     // Update the treeData state
+            // };
+
             if (logToConsole) {
-                logMessageToConsole("Received service response");
+                logMessageToConsole("Received " + data.nodes.length + " nodes, action: " + data.action);
                 if (dumpServiceResponseInConsole) {
+                    logMessageToConsole("Received service response:");
                     console.info(JSON.stringify(data));
                 }
             }
-            if (logToConsole) {
-                logMessageToConsole("Received " + data.nodes.length + " nodes");
+            switch (data.action) {
+                case "reload":
+                    reloadTree(data);
+                    break;
+
+                // case "update":
+                //     updateTree(data);
+                //     break;
+
+                default:
+                    console.warn(" React complex tree unknown action: " + data.action);
+                    break;
             }
-            const newTreeData = {};
-            for (const node of data.nodes) {
-                newTreeData[node.index] = node;
-                if (node.children) {
-                    newTreeData[node.index].children = node.children.split(",");
-                }
-            }
-            setTreeData(newTreeData);
         };
 
         if (!dataChangedDate) {
