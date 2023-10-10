@@ -40,7 +40,8 @@ export function TreeContainer({
                 const newTreeData = createTreeDataObject();
                 dispatch({
                     type: "update",
-                    data: newTreeData
+                    data: newTreeData,
+                    deletedNodeIDs: data.deletedNodeIDs
                 });
             };
 
