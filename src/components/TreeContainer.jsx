@@ -1,5 +1,6 @@
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import { createElement, useEffect, useState } from "react";
+import { createElement, useEffect, useReducer, useState } from "react";
+import treeDataReducer from "../utils/treeDataReducer";
 
 export function TreeContainer({
     dataChangedDate,
@@ -9,7 +10,7 @@ export function TreeContainer({
     logToConsole,
     dumpServiceResponseInConsole
 }) {
-    const [treeData, setTreeData] = useState(null);
+    const [treeData, dispatch] = useReducer(treeDataReducer, null);
     const [focusedItem, setFocusedItem] = useState();
     const [expandedItems, setExpandedItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
@@ -29,17 +30,19 @@ export function TreeContainer({
 
             const reloadTree = () => {
                 const newTreeData = createTreeDataObject();
-                setTreeData(newTreeData);
+                dispatch({
+                    type: "reload",
+                    data: newTreeData
+                });
             };
 
-            // const updateTree = () => {
-            //     const newTreeData = createTreeDataObject();
-            //     setTreeData(prevTreeData => ({
-            //         ...treeData,
-            //         newTreeData
-            //     }));
-            //     // Update the treeData state
-            // };
+            const updateTree = () => {
+                const newTreeData = createTreeDataObject();
+                dispatch({
+                    type: "update",
+                    data: newTreeData
+                });
+            };
 
             if (logToConsole) {
                 logMessageToConsole("Received " + data.nodes.length + " nodes, action: " + data.action);
@@ -53,9 +56,9 @@ export function TreeContainer({
                     reloadTree(data);
                     break;
 
-                // case "update":
-                //     updateTree(data);
-                //     break;
+                case "update":
+                    updateTree(data);
+                    break;
 
                 default:
                     console.warn(" React complex tree unknown action: " + data.action);
