@@ -1,5 +1,5 @@
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import { createElement, useEffect, useReducer, useState } from "react";
+import { createElement, useEffect, useReducer, useRef, useState } from "react";
 import treeDataReducer from "../utils/treeDataReducer";
 
 export function TreeContainer({
@@ -10,6 +10,7 @@ export function TreeContainer({
     logToConsole,
     dumpServiceResponseInConsole
 }) {
+    const treeRef = useRef();
     const [treeData, dispatch] = useReducer(treeDataReducer, null);
     const [focusedItem, setFocusedItem] = useState();
     const [expandedItems, setExpandedItems] = useState([]);
@@ -46,7 +47,11 @@ export function TreeContainer({
             };
 
             if (logToConsole) {
-                logMessageToConsole("Received " + data.nodes.length + " nodes, action: " + data.action);
+                if (data.nodes) {
+                    logMessageToConsole("Received " + data.nodes.length + " nodes, action: " + data.action);
+                } else {
+                    logMessageToConsole("Received no nodes, action: " + data.action);
+                }
                 if (dumpServiceResponseInConsole) {
                     logMessageToConsole("Received service response:");
                     console.info(JSON.stringify(data));
@@ -61,9 +66,20 @@ export function TreeContainer({
                     updateTree(data);
                     break;
 
+                case "focus":
+                    // No specific logic, focus is handled whenever the focusNodeID is returned. Focus action is added to allow setting focus only.
+                    break;
+
                 default:
                     console.warn(" React complex tree unknown action: " + data.action);
                     break;
+            }
+            if (data.focusNodeID) {
+                if (logToConsole) {
+                    logMessageToConsole("Set focus to " + data.focusNodeID);
+                }
+                setFocusedItem(data.focusNodeID);
+                setSelectedItems([data.focusNodeID]);
             }
         };
 
@@ -132,7 +148,7 @@ export function TreeContainer({
                 }
                 onSelectItems={items => setSelectedItems(items)}
             >
-                <Tree treeId={treeName} rootItem="root" />
+                <Tree treeId={treeName} rootItem="root" ref={treeRef} />
             </ControlledTreeEnvironment>
         </div>
     );
