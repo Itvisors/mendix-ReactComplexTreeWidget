@@ -29,6 +29,23 @@
 
         <!-- Advanced properties -->
 
+        <propertyGroup caption="Events">
+            <property key="selectedNodeIDsAttr" type="attribute" required="false">
+                <caption>Selected node IDs</caption>
+                <description>Contains a comma separated list of all selected nodes</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onSelectionChangedAction" type="action" required="false">
+                <caption>On selection changed action</caption>
+                <description></description>
+            </property>
+
+        </propertyGroup>
+
+        <!-- Advanced properties -->
+
         <propertyGroup caption="Advanced">
             <property key="logToConsole" type="boolean" defaultValue="false">
                 <caption>Console logging</caption>

@@ -1,11 +1,12 @@
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import { createElement, useEffect, useReducer, useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useReducer, useRef, useState } from "react";
 import treeDataReducer from "../utils/treeDataReducer";
 
 export function TreeContainer({
     dataChangedDate,
     serviceUrl,
     widgetName,
+    onSelectionChanged,
     logMessageToConsole,
     logToConsole,
     dumpServiceResponseInConsole
@@ -15,6 +16,17 @@ export function TreeContainer({
     const [focusedItem, setFocusedItem] = useState();
     const [expandedItems, setExpandedItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
+
+    const onSelectionChangedHandler = useCallback(
+        items => {
+            setSelectedItems(items);
+            logMessageToConsole("onSelectionChangedHandler");
+            console.dir(items);
+            const selectedIDs = items.reduce((accumulator, currentValue) => accumulator + "," + currentValue);
+            onSelectionChanged(selectedIDs);
+        },
+        [logMessageToConsole, onSelectionChanged]
+    );
 
     useEffect(() => {
         const processDataFromService = data => {
@@ -159,7 +171,7 @@ export function TreeContainer({
                 onCollapseItem={item =>
                     setExpandedItems(expandedItems.filter(expandedItemIndex => expandedItemIndex !== item.index))
                 }
-                onSelectItems={items => setSelectedItems(items)}
+                onSelectItems={onSelectionChangedHandler}
             >
                 <Tree treeId={treeName} rootItem="root" ref={treeRef} />
             </ControlledTreeEnvironment>
