@@ -6,12 +6,14 @@ export function TreeContainer({
     dataChangedDate,
     serviceUrl,
     widgetName,
+    toggleExpandedIconOnly,
     onSelectionChanged,
     logMessageToConsole,
     logToConsole,
     dumpServiceResponseInConsole
 }) {
     const treeRef = useRef();
+    const environmentRef = useRef();
     const [treeData, dispatch] = useReducer(treeDataReducer, null);
     const [focusedItem, setFocusedItem] = useState();
     const [expandedItems, setExpandedItems] = useState([]);
@@ -154,9 +156,11 @@ export function TreeContainer({
     }
 
     const treeName = "tree-" + widgetName;
+    const interactionMode = toggleExpandedIconOnly ? "click-arrow-to-expand" : "click-item-to-expand";
     return (
         <div className="react-complex-tree-widget">
             <ControlledTreeEnvironment
+                ref={environmentRef}
                 items={treeData}
                 getItemTitle={item => item.data}
                 viewState={{
@@ -166,6 +170,7 @@ export function TreeContainer({
                         selectedItems
                     }
                 }}
+                defaultInteractionMode={interactionMode}
                 onFocusItem={item => setFocusedItem(item.index)}
                 onExpandItem={item => setExpandedItems([...expandedItems, item.index])}
                 onCollapseItem={item =>

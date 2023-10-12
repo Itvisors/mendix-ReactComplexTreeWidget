@@ -36,6 +36,7 @@ export function ReactComplexTreeWidget(props) {
             dataChangedDate={props.dataChangeDateAttr.value}
             serviceUrl={props.serviceUrl.value}
             widgetName={props.name}
+            toggleExpandedIconOnly={props.toggleExpandedIconOnly}
             onSelectionChanged={onSelectionChangedHandler}
             logMessageToConsole={logMessageToConsole}
             logToConsole={props.logToConsole}

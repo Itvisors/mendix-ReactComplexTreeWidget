@@ -8,7 +8,15 @@
     <icon/>
     <properties>
 
-    
+        <!-- Service call properties -->
+
+        <propertyGroup caption="Configuration">
+            <property key="toggleExpandedIconOnly" type="boolean" defaultValue="false">
+                <caption>Toggle expanded with icon only</caption>
+                <description>Yes: Collapse/expand only by clicking on the icon. No: Toggle expanded state by clicking anywhere on the node</description>
+            </property>
+        </propertyGroup>
+
         <!-- Service call properties -->
 
         <propertyGroup caption="Service call">
