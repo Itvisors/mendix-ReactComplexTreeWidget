@@ -74,12 +74,25 @@ export function TreeContainer({
                     console.warn(" React complex tree unknown action: " + data.action);
                     break;
             }
-            if (data.focusNodeID) {
-                if (logToConsole) {
-                    logMessageToConsole("Set focus to " + data.focusNodeID);
+            if (treeRef.current) {
+                // Focus and select item if requested.
+                if (data.focusNodeID) {
+                    if (logToConsole) {
+                        logMessageToConsole("Set focus to " + data.focusNodeID);
+                    }
+                    treeRef.current.focusItem(data.focusNodeID);
+                    treeRef.current.selectItems([data.focusNodeID]);
                 }
-                setFocusedItem(data.focusNodeID);
-                setSelectedItems([data.focusNodeID]);
+
+                // Expand items if requested.
+                if (data.expandItemIDs) {
+                    if (logToConsole) {
+                        logMessageToConsole("Expand items " + data.expandItemIDs);
+                    }
+                    for (const expandItemID of data.expandItemIDs.split(",")) {
+                        treeRef.current.expandItem(expandItemID);
+                    }
+                }
             }
         };
 
