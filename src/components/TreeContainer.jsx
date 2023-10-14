@@ -21,13 +21,14 @@ export function TreeContainer({
 
     const onSelectionChangedHandler = useCallback(
         items => {
+            // Set the new selection on the state
             setSelectedItems(items);
-            logMessageToConsole("onSelectionChangedHandler");
-            console.dir(items);
-            const selectedIDs = items.reduce((accumulator, currentValue) => accumulator + "," + currentValue);
+
+            // Call handler with item IDs joined into one string
+            const selectedIDs = items.join(",");
             onSelectionChanged(selectedIDs);
         },
-        [logMessageToConsole, onSelectionChanged]
+        [onSelectionChanged]
     );
 
     useEffect(() => {
