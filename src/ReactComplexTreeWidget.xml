@@ -51,7 +51,7 @@
             </property>
             <property key="missingNodeIDsAttr" type="attribute" required="false">
                 <caption>Missing node IDs</caption>
-                <description>Use for lazy loading. Contains a comma separated list of node IDs requested by the widget.</description>
+                <description>Use for lazy loading. Contains a comma separated list of node IDs of the expanded item and its child nodes.</description>
                 <attributeTypes>
                     <attributeType name="String" />
                 </attributeTypes>

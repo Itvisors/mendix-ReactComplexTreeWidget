@@ -36,16 +36,30 @@ export function TreeContainer({
         [logMessageToConsole, logToConsole, onSelectionChanged]
     );
 
-    const onMissingNodesHandler = useCallback(
-        items => {
-            // Call handler with item IDs joined into one string
-            const selectedIDs = items.join(",");
+    const onExpandItemHandler = useCallback(
+        item => {
             if (logToConsole) {
-                logMessageToConsole("onMissingNodesHandler called for items " + selectedIDs);
+                logMessageToConsole("onExpandItemHandler: called for item " + item.index);
             }
-            onMissingNodes(selectedIDs);
+            // First set the state so the tree renders the expanded item
+            setExpandedItems([...expandedItems, item.index]);
+
+            // The library has a missing child item callback but it does not work very well.
+            // Item indeed has children
+            if (item.children && item.children.length) {
+                const firstChildID = item.children[0];
+                // Request child nodes if not already available
+                if (!treeData.data[firstChildID]) {
+                    // Call handler with expanded item ID and its child IDs
+                    const requestedIDs = item.index + "," + item.children.join(",");
+                    if (logToConsole) {
+                        logMessageToConsole("onExpandItemHandler: request items " + requestedIDs);
+                    }
+                    onMissingNodes(requestedIDs);
+                }
+            }
         },
-        [logMessageToConsole, logToConsole, onMissingNodes]
+        [expandedItems, logMessageToConsole, logToConsole, onMissingNodes, treeData?.data]
     );
 
     useEffect(() => {
@@ -142,6 +156,9 @@ export function TreeContainer({
             return;
         }
 
+        // Even though the dependencies did not change, the effect got called way too often.
+        // Double checked by logging the dependencies and comparing them as mentioned in the React useEffect documentation.
+        // Keep track of dataChangedDate in the reducer and only call the service if the date really is different.
         if (dataChangedDate.getTime() === treeData?.dataChangedDate.getTime()) {
             if (logToConsole) {
                 logMessageToConsole("Data changed date still the same");
@@ -219,12 +236,11 @@ export function TreeContainer({
                 }}
                 defaultInteractionMode={interactionMode}
                 onFocusItem={item => setFocusedItem(item.index)}
-                onExpandItem={item => setExpandedItems([...expandedItems, item.index])}
+                onExpandItem={onExpandItemHandler}
                 onCollapseItem={item =>
                     setExpandedItems(expandedItems.filter(expandedItemIndex => expandedItemIndex !== item.index))
                 }
                 onSelectItems={onSelectionChangedHandler}
-                onMissingItems={onMissingNodesHandler}
             >
                 <Tree treeId={treeName} rootItem="root" ref={treeRef} />
             </ControlledTreeEnvironment>
