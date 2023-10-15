@@ -142,6 +142,20 @@ export function TreeContainer({
             return;
         }
 
+        if (dataChangedDate.getTime() === treeData?.dataChangedDate.getTime()) {
+            if (logToConsole) {
+                logMessageToConsole("Data changed date still the same");
+            }
+            return;
+        }
+        if (logToConsole) {
+            logMessageToConsole("Data changed date changed");
+        }
+        dispatch({
+            type: "setDataChangedDate",
+            dataChangedDate: dataChangedDate
+        });
+
         if (serviceUrl) {
             if (logToConsole) {
                 logMessageToConsole("Call service using URL: " + serviceUrl);
@@ -172,9 +186,16 @@ export function TreeContainer({
                     console.error("Call to URL " + serviceUrl + " failed: " + response.statusText);
                 }
             });
-    }, [dataChangedDate, serviceUrl, logMessageToConsole, logToConsole, dumpServiceResponseInConsole]);
+    }, [
+        dataChangedDate,
+        serviceUrl,
+        logMessageToConsole,
+        logToConsole,
+        dumpServiceResponseInConsole,
+        treeData?.dataChangedDate
+    ]);
 
-    if (!treeData) {
+    if (!treeData?.data) {
         if (logToConsole) {
             logMessageToConsole("No tree data");
         }
@@ -187,7 +208,7 @@ export function TreeContainer({
         <div className="react-complex-tree-widget">
             <ControlledTreeEnvironment
                 ref={environmentRef}
-                items={treeData}
+                items={treeData.data}
                 getItemTitle={item => item.data}
                 viewState={{
                     [treeName]: {
