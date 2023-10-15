@@ -8,6 +8,7 @@ export function TreeContainer({
     widgetName,
     toggleExpandedIconOnly,
     onSelectionChanged,
+    onMissingNodes,
     logMessageToConsole,
     logToConsole,
     dumpServiceResponseInConsole
@@ -21,14 +22,30 @@ export function TreeContainer({
 
     const onSelectionChangedHandler = useCallback(
         items => {
+            const selectedIDs = items.join(",");
+            if (logToConsole) {
+                logMessageToConsole("onSelectionChangedHandler called for items " + selectedIDs);
+            }
+
             // Set the new selection on the state
             setSelectedItems(items);
 
             // Call handler with item IDs joined into one string
-            const selectedIDs = items.join(",");
             onSelectionChanged(selectedIDs);
         },
-        [onSelectionChanged]
+        [logMessageToConsole, logToConsole, onSelectionChanged]
+    );
+
+    const onMissingNodesHandler = useCallback(
+        items => {
+            // Call handler with item IDs joined into one string
+            const selectedIDs = items.join(",");
+            if (logToConsole) {
+                logMessageToConsole("onMissingNodesHandler called for items " + selectedIDs);
+            }
+            onMissingNodes(selectedIDs);
+        },
+        [logMessageToConsole, logToConsole, onMissingNodes]
     );
 
     useEffect(() => {
@@ -85,6 +102,9 @@ export function TreeContainer({
                     // No specific logic, focus is handled whenever the focusNodeID is returned. Focus action is added to allow setting focus only.
                     break;
 
+                case "none":
+                    break;
+
                 default:
                     console.warn(" React complex tree unknown action: " + data.action);
                     break;
@@ -111,23 +131,28 @@ export function TreeContainer({
             }
         };
 
-        if (!dataChangedDate) {
+        if (dataChangedDate) {
+            if (logToConsole) {
+                logMessageToConsole("Data changed date: " + dataChangedDate);
+            }
+        } else {
             if (logToConsole) {
                 logMessageToConsole("Data changed date not set");
             }
             return;
         }
 
-        if (!serviceUrl) {
+        if (serviceUrl) {
+            if (logToConsole) {
+                logMessageToConsole("Call service using URL: " + serviceUrl);
+            }
+        } else {
             if (logToConsole) {
                 logMessageToConsole("Service URL has no value");
             }
             return;
         }
 
-        if (logToConsole) {
-            logMessageToConsole("Call service using URL: " + serviceUrl);
-        }
         // eslint-disable-next-line no-undef
         const token = mx.session.getConfig("csrftoken");
         window
@@ -178,6 +203,7 @@ export function TreeContainer({
                     setExpandedItems(expandedItems.filter(expandedItemIndex => expandedItemIndex !== item.index))
                 }
                 onSelectItems={onSelectionChangedHandler}
+                onMissingItems={onMissingNodesHandler}
             >
                 <Tree treeId={treeName} rootItem="root" ref={treeRef} />
             </ControlledTreeEnvironment>

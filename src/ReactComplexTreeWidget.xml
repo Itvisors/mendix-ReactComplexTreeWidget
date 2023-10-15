@@ -40,13 +40,24 @@
         <propertyGroup caption="Events">
             <property key="selectedNodeIDsAttr" type="attribute" required="false">
                 <caption>Selected node IDs</caption>
-                <description>Contains a comma separated list of all selected nodes</description>
+                <description>Contains a comma separated list of all selected node IDs</description>
                 <attributeTypes>
                     <attributeType name="String" />
                 </attributeTypes>
             </property>
             <property key="onSelectionChangedAction" type="action" required="false">
                 <caption>On selection changed action</caption>
+                <description></description>
+            </property>
+            <property key="missingNodeIDsAttr" type="attribute" required="false">
+                <caption>Missing node IDs</caption>
+                <description>Use for lazy loading. Contains a comma separated list of node IDs requested by the widget.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onMissingNodesAction" type="action" required="false">
+                <caption>On missing nodes action</caption>
                 <description></description>
             </property>
 
