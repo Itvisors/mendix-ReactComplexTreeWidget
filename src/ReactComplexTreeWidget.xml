@@ -8,13 +8,54 @@
     <icon/>
     <properties>
 
-        <!-- Service call properties -->
+        <!-- Configuration properties -->
 
         <propertyGroup caption="Configuration">
             <property key="toggleExpandedIconOnly" type="boolean" defaultValue="false">
                 <caption>Toggle expanded with icon only</caption>
                 <description>Yes: Collapse/expand only by clicking on the icon. No: Toggle expanded state by clicking anywhere on the node</description>
             </property>
+        </propertyGroup>
+
+        <!-- Button properties -->
+
+        <propertyGroup caption="Buttons">
+            <propertyGroup caption="Collapse all">
+                <property key="collapseAllButtonCaption" type="expression" required="false">
+                    <caption>Caption</caption>
+                    <description></description>
+                    <returnType type="String" />
+                </property>
+                <property key="collapseAllButtonIcon" type="icon" required="false">
+                    <caption>Icon</caption>
+                    <description></description>
+                </property>
+                <property key="collapseAllButtonClass" type="string" defaultValue="tree-widget-button-collapse-all mx-button">
+                    <caption>Class</caption>
+                    <description>Separate multiple values using a space</description>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Expand all">
+                <property key="showExpandAllButton" type="expression" required="false">
+                    <caption>Show button</caption>
+                    <description>Only useful when the entire tree is loaded, not for lazy load. With lazy load it would trigger a lot of missing node events and that would only load the next level, not all levels.</description>
+                    <returnType type="Boolean" />
+                </property>
+                <property key="expandAllButtonIcon" type="icon" required="false">
+                    <caption>Icon</caption>
+                    <description></description>
+                </property>
+                <property key="expandAllButtonCaption" type="expression" required="false">
+                    <caption>Caption</caption>
+                    <description></description>
+                    <returnType type="String" />
+                </property>
+                <property key="expandAllButtonClass" type="string" defaultValue="tree-widget-button-expand-all mx-button">
+                    <caption>Class</caption>
+                    <description>Separate multiple values using a space</description>
+                </property>
+            </propertyGroup>
         </propertyGroup>
 
         <!-- Service call properties -->
@@ -35,7 +76,7 @@
 
         </propertyGroup>
 
-        <!-- Advanced properties -->
+        <!-- Events properties -->
 
         <propertyGroup caption="Events">
             <property key="selectedNodeIDsAttr" type="attribute" required="false">

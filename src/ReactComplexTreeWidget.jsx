@@ -56,6 +56,13 @@ export function ReactComplexTreeWidget(props) {
             serviceUrl={props.serviceUrl.value}
             widgetName={props.name}
             toggleExpandedIconOnly={props.toggleExpandedIconOnly}
+            collapseAllButtonIcon={props.collapseAllButtonIcon?.value}
+            collapseAllButtonCaption={props.collapseAllButtonCaption?.value}
+            collapseAllButtonClass={props.collapseAllButtonClass}
+            showExpandAllButton={!!props.showExpandAllButton?.value}
+            expandAllButtonIcon={props.expandAllButtonIcon?.value}
+            expandAllButtonCaption={props.expandAllButtonCaption?.value}
+            expandAllButtonClass={props.expandAllButtonClass}
             onSelectionChanged={onSelectionChangedHandler}
             onMissingNodes={onMissingNodesHandler}
             logMessageToConsole={logMessageToConsole}

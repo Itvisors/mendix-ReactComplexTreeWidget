@@ -1,5 +1,6 @@
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
 import { createElement, useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { Icon } from "mendix/components/web/Icon";
 import treeDataReducer from "../utils/treeDataReducer";
 
 export function TreeContainer({
@@ -7,6 +8,13 @@ export function TreeContainer({
     serviceUrl,
     widgetName,
     toggleExpandedIconOnly,
+    collapseAllButtonIcon,
+    collapseAllButtonCaption,
+    collapseAllButtonClass,
+    showExpandAllButton,
+    expandAllButtonIcon,
+    expandAllButtonCaption,
+    expandAllButtonClass,
     onSelectionChanged,
     onMissingNodes,
     logMessageToConsole,
@@ -61,6 +69,22 @@ export function TreeContainer({
         },
         [expandedItems, logMessageToConsole, logToConsole, onMissingNodes, treeData?.data]
     );
+
+    const onCollapseAllButtonClick = useCallback(() => {
+        // The treeref cannot be used for controlled trees, set the state directly.
+        setExpandedItems([]);
+    }, []);
+
+    const onExpandAllButtonClick = useCallback(() => {
+        // The treeref cannot be used for controlled trees, set the state directly.
+        const expandableItemIDs = [];
+        for (const itemID in treeData.data) {
+            if (treeData.data[itemID].children) {
+                expandableItemIDs.push(itemID);
+            }
+        }
+        setExpandedItems(expandableItemIDs);
+    }, [treeData?.data]);
 
     useEffect(() => {
         const processDataFromService = data => {
@@ -223,6 +247,18 @@ export function TreeContainer({
     const interactionMode = toggleExpandedIconOnly ? "click-arrow-to-expand" : "click-item-to-expand";
     return (
         <div className="react-complex-tree-widget">
+            <div className="tree-widget-button-container">
+                <button id="buttonCollapseAll" className={collapseAllButtonClass} onClick={onCollapseAllButtonClick}>
+                    {collapseAllButtonIcon && <Icon icon={collapseAllButtonIcon} />}
+                    <span>{collapseAllButtonCaption ? collapseAllButtonCaption : ""}</span>
+                </button>
+                {showExpandAllButton && (
+                    <button id="buttonExpandAll" className={expandAllButtonClass} onClick={onExpandAllButtonClick}>
+                        {expandAllButtonIcon && <Icon icon={expandAllButtonIcon} />}
+                        <span>{expandAllButtonCaption ? expandAllButtonCaption : ""}</span>
+                    </button>
+                )}
+            </div>
             <ControlledTreeEnvironment
                 ref={environmentRef}
                 items={treeData.data}
