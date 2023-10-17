@@ -50,12 +50,38 @@ export function ReactComplexTreeWidget(props) {
         [missingNodeIDsAttr, onMissingNodesAction]
     );
 
+    const { onNodeRenamedAction, eventNodeIDAttr, newNodeNameAttr } = props;
+    const onNodeRenamedHandler = useCallback(
+        (nodeID, newName) => {
+            if (eventNodeIDAttr && eventNodeIDAttr.status === "available") {
+                if (eventNodeIDAttr.readOnly) {
+                    console.warn("ReactComplexTreeWidget: Event node ID attribute is readonly");
+                } else {
+                    eventNodeIDAttr.setValue(nodeID);
+                }
+            }
+            if (newNodeNameAttr && newNodeNameAttr.status === "available") {
+                if (newNodeNameAttr.readOnly) {
+                    console.warn("ReactComplexTreeWidget: Event node ID attribute is readonly");
+                } else {
+                    newNodeNameAttr.setValue(newName);
+                }
+            }
+
+            if (onNodeRenamedAction && onNodeRenamedAction.canExecute && !onNodeRenamedAction.isExecuting) {
+                onNodeRenamedAction.execute();
+            }
+        },
+        [eventNodeIDAttr, newNodeNameAttr, onNodeRenamedAction]
+    );
+
     return (
         <TreeContainer
             dataChangedDate={props.dataChangeDateAttr.value}
             serviceUrl={props.serviceUrl.value}
             widgetName={props.name}
             toggleExpandedIconOnly={props.toggleExpandedIconOnly}
+            allowNodeRename={props.allowNodeRename}
             collapseAllButtonIcon={props.collapseAllButtonIcon?.value}
             collapseAllButtonCaption={props.collapseAllButtonCaption?.value}
             collapseAllButtonClass={props.collapseAllButtonClass}
@@ -65,6 +91,7 @@ export function ReactComplexTreeWidget(props) {
             expandAllButtonClass={props.expandAllButtonClass}
             onSelectionChanged={onSelectionChangedHandler}
             onMissingNodes={onMissingNodesHandler}
+            onNodeRenamed={onNodeRenamedHandler}
             logMessageToConsole={logMessageToConsole}
             logToConsole={props.logToConsole}
             dumpServiceResponseInConsole={props.dumpServiceResponseInConsole}

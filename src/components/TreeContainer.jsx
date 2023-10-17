@@ -8,6 +8,7 @@ export function TreeContainer({
     serviceUrl,
     widgetName,
     toggleExpandedIconOnly,
+    allowNodeRename,
     collapseAllButtonIcon,
     collapseAllButtonCaption,
     collapseAllButtonClass,
@@ -17,6 +18,7 @@ export function TreeContainer({
     expandAllButtonClass,
     onSelectionChanged,
     onMissingNodes,
+    onNodeRenamed,
     logMessageToConsole,
     logToConsole,
     dumpServiceResponseInConsole
@@ -85,6 +87,13 @@ export function TreeContainer({
         }
         setExpandedItems(expandableItemIDs);
     }, [treeData?.data]);
+
+    const onRenameNodeHandler = useCallback(
+        (item, newName) => {
+            onNodeRenamed(item.index, newName);
+        },
+        [onNodeRenamed]
+    );
 
     useEffect(() => {
         const processDataFromService = data => {
@@ -271,12 +280,14 @@ export function TreeContainer({
                     }
                 }}
                 defaultInteractionMode={interactionMode}
+                canRename={allowNodeRename}
                 onFocusItem={item => setFocusedItem(item.index)}
                 onExpandItem={onExpandItemHandler}
                 onCollapseItem={item =>
                     setExpandedItems(expandedItems.filter(expandedItemIndex => expandedItemIndex !== item.index))
                 }
                 onSelectItems={onSelectionChangedHandler}
+                onRenameItem={onRenameNodeHandler}
             >
                 <Tree treeId={treeName} rootItem="root" ref={treeRef} />
             </ControlledTreeEnvironment>
