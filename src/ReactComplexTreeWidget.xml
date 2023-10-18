@@ -8,17 +8,22 @@
     <icon/>
     <properties>
 
-        <!-- Configuration properties -->
+        <!-- Service call properties -->
 
-        <propertyGroup caption="Configuration">
-            <property key="toggleExpandedIconOnly" type="boolean" defaultValue="false">
-                <caption>Toggle expanded with icon only</caption>
-                <description>Yes: Collapse/expand only by clicking on the icon. No: Toggle expanded state by clicking anywhere on the node</description>
+        <propertyGroup caption="Service call">
+            <property key="dataChangeDateAttr" type="attribute">
+                <caption>Data change date</caption>
+                <description>Update the date in your logic to make the widget call the web service. (Pluggable widgets are rendered VERY often!)</description>
+                <attributeTypes>
+                    <attributeType name="DateTime"/>
+                </attributeTypes>
             </property>
-            <property key="allowNodeRename" type="boolean" defaultValue="false">
-                <caption>Allow node rename</caption>
-                <description>If enabled, the user can press F2 to edit the name of the node directly in the tree</description>
+            <property key="serviceUrl" type="expression">
+                <caption>URL for the service</caption>
+                <description>Only calls to the app backend are supported. So it must be in the format /rest/*yourServiceName*</description>
+                <returnType type="String" />
             </property>
+
         </propertyGroup>
 
         <!-- Button properties -->
@@ -62,20 +67,39 @@
             </propertyGroup>
         </propertyGroup>
 
-        <!-- Service call properties -->
+        <!-- Configuration properties -->
 
-        <propertyGroup caption="Service call">
-            <property key="dataChangeDateAttr" type="attribute">
-                <caption>Data change date</caption>
-                <description>Update the date in your logic to make the widget call the web service. (Pluggable widgets are rendered VERY often!)</description>
+        <propertyGroup caption="Configuration">
+            <property key="toggleExpandedIconOnly" type="boolean" defaultValue="false">
+                <caption>Toggle expanded with icon only</caption>
+                <description>Yes: Collapse/expand only by clicking on the icon. No: Toggle expanded state by clicking anywhere on the node</description>
+            </property>
+        </propertyGroup>
+
+        <!-- Rename node properties -->
+
+        <propertyGroup caption="Rename node">
+            <property key="allowNodeRename" type="boolean" defaultValue="false">
+                <caption>Allow node rename</caption>
+                <description>If enabled, the user can press F2 to edit the name of the node directly in the tree</description>
+            </property>
+            <property key="renamedNodeIDAttr" type="attribute" required="false">
+                <caption>Renamed node ID</caption>
+                <description>The ID of the node that was renamed</description>
                 <attributeTypes>
-                    <attributeType name="DateTime"/>
+                    <attributeType name="String" />
                 </attributeTypes>
             </property>
-            <property key="serviceUrl" type="expression">
-                <caption>URL for the service</caption>
-                <description>Only calls to the app backend are supported. So it must be in the format /rest/*yourServiceName*</description>
-                <returnType type="String" />
+            <property key="newNodeNameAttr" type="attribute" required="false">
+                <caption>New node name</caption>
+                <description>The attribute to receive the changed node name. Use it to update the node referenced using the Event node ID property</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onNodeRenamedAction" type="action" required="false">
+                <caption>On node renamed action</caption>
+                <description></description>
             </property>
 
         </propertyGroup>
@@ -103,24 +127,6 @@
             </property>
             <property key="onMissingNodesAction" type="action" required="false">
                 <caption>On missing nodes action</caption>
-                <description></description>
-            </property>
-            <property key="eventNodeIDAttr" type="attribute" required="false">
-                <caption>Event node ID</caption>
-                <description>The ID of the node on which the event happened, like drag or name edit</description>
-                <attributeTypes>
-                    <attributeType name="String" />
-                </attributeTypes>
-            </property>
-            <property key="newNodeNameAttr" type="attribute" required="false">
-                <caption>New node name</caption>
-                <description>The attribute to receive the changed node name. Use it to update the node referenced using the Event node ID property</description>
-                <attributeTypes>
-                    <attributeType name="String" />
-                </attributeTypes>
-            </property>
-            <property key="onNodeRenamedAction" type="action" required="false">
-                <caption>On node renamed action</caption>
                 <description></description>
             </property>
 

@@ -50,14 +50,14 @@ export function ReactComplexTreeWidget(props) {
         [missingNodeIDsAttr, onMissingNodesAction]
     );
 
-    const { onNodeRenamedAction, eventNodeIDAttr, newNodeNameAttr } = props;
+    const { onNodeRenamedAction, renamedNodeIDAttr, newNodeNameAttr } = props;
     const onNodeRenamedHandler = useCallback(
         (nodeID, newName) => {
-            if (eventNodeIDAttr && eventNodeIDAttr.status === "available") {
-                if (eventNodeIDAttr.readOnly) {
+            if (renamedNodeIDAttr && renamedNodeIDAttr.status === "available") {
+                if (renamedNodeIDAttr.readOnly) {
                     console.warn("ReactComplexTreeWidget: Event node ID attribute is readonly");
                 } else {
-                    eventNodeIDAttr.setValue(nodeID);
+                    renamedNodeIDAttr.setValue(nodeID);
                 }
             }
             if (newNodeNameAttr && newNodeNameAttr.status === "available") {
@@ -72,7 +72,7 @@ export function ReactComplexTreeWidget(props) {
                 onNodeRenamedAction.execute();
             }
         },
-        [eventNodeIDAttr, newNodeNameAttr, onNodeRenamedAction]
+        [renamedNodeIDAttr, newNodeNameAttr, onNodeRenamedAction]
     );
 
     return (
