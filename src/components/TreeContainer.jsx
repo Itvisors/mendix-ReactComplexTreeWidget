@@ -1,5 +1,5 @@
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import { createElement, useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useReducer, useState } from "react";
 import { Icon } from "mendix/components/web/Icon";
 import treeDataReducer from "../utils/treeDataReducer";
 
@@ -9,6 +9,8 @@ export function TreeContainer({
     widgetName,
     toggleExpandedIconOnly,
     allowNodeRename,
+    allowDragReordering,
+    allowDragMove,
     collapseAllButtonIcon,
     collapseAllButtonCaption,
     collapseAllButtonClass,
@@ -19,12 +21,11 @@ export function TreeContainer({
     onSelectionChanged,
     onMissingNodes,
     onNodeRenamed,
+    onDrop,
     logMessageToConsole,
     logToConsole,
     dumpServiceResponseInConsole
 }) {
-    const treeRef = useRef();
-    const environmentRef = useRef();
     const [treeData, dispatch] = useReducer(treeDataReducer, null);
     const [focusedItem, setFocusedItem] = useState();
     const [expandedItems, setExpandedItems] = useState([]);
@@ -73,12 +74,10 @@ export function TreeContainer({
     );
 
     const onCollapseAllButtonClick = useCallback(() => {
-        // The treeref cannot be used for controlled trees, set the state directly.
         setExpandedItems([]);
     }, []);
 
     const onExpandAllButtonClick = useCallback(() => {
-        // The treeref cannot be used for controlled trees, set the state directly.
         const expandableItemIDs = [];
         for (const itemID in treeData.data) {
             if (treeData.data[itemID].children) {
@@ -94,6 +93,39 @@ export function TreeContainer({
         },
         [onNodeRenamed]
     );
+
+    const onDropHandler = useCallback(
+        (items, target) => {
+            const draggedItemIDs = items.reduce((accumulator, item) => {
+                if (accumulator) {
+                    return accumulator + "," + item.index;
+                } else {
+                    return item.index;
+                }
+            }, null);
+            if (logToConsole) {
+                logMessageToConsole(
+                    "onDropHandler: items " + draggedItemIDs + " dragged, drop info: " + JSON.stringify(target)
+                );
+            }
+            onDrop(draggedItemIDs, target);
+        },
+        [logMessageToConsole, logToConsole, onDrop]
+    );
+
+    const canDragHandler = useCallback(items => {
+        if (!items || items.length === 0) {
+            return true;
+        }
+
+        // For a single item, check whether the item can be moved
+        if (items.length === 1) {
+            return items[0].canMove;
+        }
+
+        const firstParentID = items[0].parentID;
+        return items.every(item => item.parentID === firstParentID);
+    }, []);
 
     useEffect(() => {
         const processDataFromService = data => {
@@ -156,25 +188,22 @@ export function TreeContainer({
                     console.warn(" React complex tree unknown action: " + data.action);
                     break;
             }
-            if (treeRef.current) {
-                // Focus and select item if requested.
-                if (data.focusNodeID) {
-                    if (logToConsole) {
-                        logMessageToConsole("Set focus to " + data.focusNodeID);
-                    }
-                    treeRef.current.focusItem(data.focusNodeID);
-                    treeRef.current.selectItems([data.focusNodeID]);
+            // Focus and select item if requested.
+            if (data.focusNodeID) {
+                if (logToConsole) {
+                    logMessageToConsole("Set focus to " + data.focusNodeID);
                 }
+                setFocusedItem(data.focusNodeID);
+                setSelectedItems([data.focusNodeID]);
+            }
 
-                // Expand items if requested.
-                if (data.expandItemIDs) {
-                    if (logToConsole) {
-                        logMessageToConsole("Expand items " + data.expandItemIDs);
-                    }
-                    for (const expandItemID of data.expandItemIDs.split(",")) {
-                        treeRef.current.expandItem(expandItemID);
-                    }
+            // Expand items if requested.
+            if (data.expandItemIDs) {
+                if (logToConsole) {
+                    logMessageToConsole("Expand items " + data.expandItemIDs);
                 }
+                const expandItemIDArray = data.expandItemIDs.split(",");
+                setExpandedItems([...expandedItems, ...expandItemIDArray]);
             }
         };
 
@@ -242,7 +271,8 @@ export function TreeContainer({
         logMessageToConsole,
         logToConsole,
         dumpServiceResponseInConsole,
-        treeData?.dataChangedDate
+        treeData,
+        expandedItems
     ]);
 
     if (!treeData?.data) {
@@ -269,7 +299,6 @@ export function TreeContainer({
                 )}
             </div>
             <ControlledTreeEnvironment
-                ref={environmentRef}
                 items={treeData.data}
                 getItemTitle={item => item.data}
                 viewState={{
@@ -281,6 +310,10 @@ export function TreeContainer({
                 }}
                 defaultInteractionMode={interactionMode}
                 canRename={allowNodeRename}
+                canDragAndDrop={allowDragReordering || allowDragMove}
+                canReorderItems={allowDragReordering}
+                canDropOnFolder={allowDragMove}
+                canDropOnNonFolder={allowDragMove}
                 onFocusItem={item => setFocusedItem(item.index)}
                 onExpandItem={onExpandItemHandler}
                 onCollapseItem={item =>
@@ -288,8 +321,10 @@ export function TreeContainer({
                 }
                 onSelectItems={onSelectionChangedHandler}
                 onRenameItem={onRenameNodeHandler}
+                canDrag={canDragHandler}
+                onDrop={onDropHandler}
             >
-                <Tree treeId={treeName} rootItem="root" ref={treeRef} />
+                <Tree treeId={treeName} rootItem="root" />
             </ControlledTreeEnvironment>
         </div>
     );

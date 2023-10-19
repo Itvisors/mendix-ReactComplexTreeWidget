@@ -75,6 +75,31 @@ export function ReactComplexTreeWidget(props) {
         [renamedNodeIDAttr, newNodeNameAttr, onNodeRenamedAction]
     );
 
+    const { onDropAction, draggedNodeIDsAttr, dropTargetAttr } = props;
+
+    const onDropHandler = useCallback(
+        (droppedNodeIDs, target) => {
+            if (draggedNodeIDsAttr && draggedNodeIDsAttr.status === "available") {
+                if (draggedNodeIDsAttr.readOnly) {
+                    console.warn("ReactComplexTreeWidget: Dragged node IDs attribute is readonly");
+                } else {
+                    draggedNodeIDsAttr.setValue(droppedNodeIDs);
+                }
+            }
+            if (dropTargetAttr && dropTargetAttr.status === "available") {
+                if (dropTargetAttr.readOnly) {
+                    console.warn("ReactComplexTreeWidget: Drop target ID attribute is readonly");
+                } else {
+                    dropTargetAttr.setValue(JSON.stringify(target));
+                }
+            }
+            if (onDropAction && onDropAction.canExecute && !onDropAction.isExecuting) {
+                onDropAction.execute();
+            }
+        },
+        [draggedNodeIDsAttr, dropTargetAttr, onDropAction]
+    );
+
     return (
         <TreeContainer
             dataChangedDate={props.dataChangeDateAttr.value}
@@ -82,6 +107,8 @@ export function ReactComplexTreeWidget(props) {
             widgetName={props.name}
             toggleExpandedIconOnly={props.toggleExpandedIconOnly}
             allowNodeRename={props.allowNodeRename}
+            allowDragReordering={props.allowDragReordering}
+            allowDragMove={props.allowDragMove}
             collapseAllButtonIcon={props.collapseAllButtonIcon?.value}
             collapseAllButtonCaption={props.collapseAllButtonCaption?.value}
             collapseAllButtonClass={props.collapseAllButtonClass}
@@ -92,6 +119,7 @@ export function ReactComplexTreeWidget(props) {
             onSelectionChanged={onSelectionChangedHandler}
             onMissingNodes={onMissingNodesHandler}
             onNodeRenamed={onNodeRenamedHandler}
+            onDrop={onDropHandler}
             logMessageToConsole={logMessageToConsole}
             logToConsole={props.logToConsole}
             dumpServiceResponseInConsole={props.dumpServiceResponseInConsole}

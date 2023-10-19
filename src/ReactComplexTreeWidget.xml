@@ -48,7 +48,7 @@
             <propertyGroup caption="Expand all">
                 <property key="showExpandAllButton" type="expression" required="false">
                     <caption>Show button</caption>
-                    <description>Only useful when the entire tree is loaded, not for lazy load. With lazy load it would trigger a lot of missing node events and that would only load the next level, not all levels.</description>
+                    <description>Only useful when the entire tree is loaded, not for lazy load. With lazy load it would trigger a lot of missing node events and that would only load the next level, not all levels</description>
                     <returnType type="Boolean" />
                 </property>
                 <property key="expandAllButtonIcon" type="icon" required="false">
@@ -120,7 +120,7 @@
             </property>
             <property key="missingNodeIDsAttr" type="attribute" required="false">
                 <caption>Missing node IDs</caption>
-                <description>Use for lazy loading. Contains a comma separated list of node IDs of the expanded item and its child nodes.</description>
+                <description>Use for lazy loading. Contains a comma separated list of node IDs of the expanded node and its child nodes</description>
                 <attributeTypes>
                     <attributeType name="String" />
                 </attributeTypes>
@@ -132,12 +132,44 @@
 
         </propertyGroup>
 
+        <!-- Drag/drop properties -->
+
+        <propertyGroup caption="Drag and drop">
+            <property key="allowDragReordering" type="boolean" defaultValue="false">
+                <caption>Allow reordering</caption>
+                <description>If enabled, the user can reorder child nodes within the parent</description>
+            </property>
+            <property key="allowDragMove" type="boolean" defaultValue="false">
+                <caption>Allow move</caption>
+                <description>If enabled, the user can move nodes anywhere in the tree</description>
+            </property>
+            <property key="draggedNodeIDsAttr" type="attribute" required="false">
+                <caption>Dragged node IDs</caption>
+                <description>Contains a comma separated list of the IDs of the dragged nodes</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="dropTargetAttr" type="attribute" required="false">
+                <caption>Drop target info</caption>
+                <description>The drop target info. This is a JSON object as string</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onDropAction" type="action" required="false">
+                <caption>On drop action</caption>
+                <description></description>
+            </property>
+
+        </propertyGroup>
+
         <!-- Advanced properties -->
 
         <propertyGroup caption="Advanced">
             <property key="logToConsole" type="boolean" defaultValue="false">
                 <caption>Console logging</caption>
-                <description>Log widget progress to the console. Useful to get timing on data retrieval etc.</description>
+                <description>Log widget progress to the console. Useful to get timing on data retrieval etc</description>
             </property>
             <property key="dumpServiceResponseInConsole" type="boolean" defaultValue="false">
                 <caption>Dump service response</caption>
