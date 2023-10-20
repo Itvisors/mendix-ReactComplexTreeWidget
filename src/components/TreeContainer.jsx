@@ -199,11 +199,28 @@ export function TreeContainer({
 
             // Expand items if requested.
             if (data.expandItemIDs) {
-                if (logToConsole) {
-                    logMessageToConsole("Expand items " + data.expandItemIDs);
-                }
                 const expandItemIDArray = data.expandItemIDs.split(",");
-                setExpandedItems([...expandedItems, ...expandItemIDArray]);
+                if (data.resetExpandedItems) {
+                    // Only expand the requested items
+                    if (logToConsole) {
+                        logMessageToConsole("Expand only items " + data.expandItemIDs);
+                    }
+                    setExpandedItems(expandItemIDArray);
+                } else {
+                    // Expand the requested items in addition to any already expanded items
+                    if (logToConsole) {
+                        logMessageToConsole("Expand items " + data.expandItemIDs);
+                    }
+                    setExpandedItems([...expandedItems, ...expandItemIDArray]);
+                }
+            } else {
+                if (data.resetExpandedItems) {
+                    // Clear expanded state, causing all nodes to be collapsed
+                    if (logToConsole) {
+                        logMessageToConsole("Reset expanded state, collapse all nodes");
+                    }
+                    setExpandedItems([]);
+                }
             }
         };
 
