@@ -123,8 +123,8 @@ export function TreeContainer({
             return items[0].canMove;
         }
 
-        const firstParentID = items[0].parentID;
-        return items.every(item => item.parentID === firstParentID);
+        const firstParentID = items[0].data.parentID;
+        return items.every(item => item.data.parentID === firstParentID && item.canMove);
     }, []);
 
     useEffect(() => {
@@ -132,7 +132,16 @@ export function TreeContainer({
             const createTreeDataObject = () => {
                 const newTreeData = {};
                 for (const node of data.nodes) {
-                    newTreeData[node.index] = node;
+                    newTreeData[node.index] = {
+                        index: node.index,
+                        isFolder: node.isFolder,
+                        canMove: node.canMove,
+                        canRename: node.canRename,
+                        data: {
+                            name: node.name,
+                            parentID: node.parentID
+                        }
+                    };
                     if (node.children) {
                         newTreeData[node.index].children = node.children.split(",");
                     }
@@ -317,7 +326,7 @@ export function TreeContainer({
             </div>
             <ControlledTreeEnvironment
                 items={treeData.data}
-                getItemTitle={item => item.data}
+                getItemTitle={item => item.data.name}
                 viewState={{
                     [treeName]: {
                         focusedItem,
