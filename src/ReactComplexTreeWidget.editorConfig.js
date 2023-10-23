@@ -1,44 +1,4 @@
-/**
- * @typedef Property
- * @type {object}
- * @property {string} key
- * @property {string} caption
- * @property {string} description
- * @property {string[]} objectHeaders
- * @property {ObjectProperties[]} objects
- * @property {Properties[]} properties
- */
-
-/**
- * @typedef ObjectProperties
- * @type {object}
- * @property {PropertyGroup[]} properties
- * @property {string[]} captions
- */
-
-/**
- * @typedef PropertyGroup
- * @type {object}
- * @property {string} caption
- * @property {PropertyGroup[]} propertyGroups
- * @property {Property[]} properties
- */
-
-/**
- * @typedef Properties
- * @type {PropertyGroup}
- */
-
-/**
- * @typedef Problem
- * @type {object}
- * @property {string} property
- * @property {("error" | "warning" | "deprecation")} severity
- * @property {string} message
- * @property {string} studioMessage
- * @property {string} url
- * @property {string} studioUrl
- */
+import { hidePropertyIn } from "@mendix/pluggable-widgets-tools";
 
 /**
  * @param {object} values
@@ -48,33 +8,77 @@
  */
 export function getProperties(values, defaultProperties, target) {
     // Do the values manipulation here to control the visibility of properties in Studio and Studio Pro conditionally.
-    /* Example
-    if (values.myProperty === "custom") {
-        delete defaultProperties.properties.myOtherProperty;
+
+    // Hide rename properties
+    if (!values.allowNodeRename) {
+        hidePropertyIn(defaultProperties, values, "renamedNodeIDAttr");
+        hidePropertyIn(defaultProperties, values, "newNodeNameAttr");
+        hidePropertyIn(defaultProperties, values, "onNodeRenamedAction");
     }
-    */
+
+    // Hide drag/drop properties
+    if (!values.allowDragReordering && !values.allowDragMove) {
+        hidePropertyIn(defaultProperties, values, "draggedNodeIDsAttr");
+        hidePropertyIn(defaultProperties, values, "dropTargetAttr");
+        hidePropertyIn(defaultProperties, values, "onDropAction");
+    }
+
     return defaultProperties;
 }
 
-// /**
-//  * @param {Object} values
-//  * @returns {Problem[]} returns a list of problems.
-//  */
-// export function check(values) {
-//    /** @type {Problem[]} */
-//    const errors = [];
-//    // Add errors to the above array to throw errors in Studio and Studio Pro.
-//    /* Example
-//    if (values.myProperty !== "custom") {
-//        errors.push({
-//            property: `myProperty`,
-//            message: `The value of 'myProperty' is different of 'custom'.`,
-//            url: "https://github.com/myrepo/mywidget"
-//        });
-//    }
-//    */
-//    return errors;
-// }
+/**
+ * @param {Object} values
+ * @returns {Problem[]} returns a list of problems.
+ */
+export function check(values) {
+    /** @type {Problem[]} */
+    const errors = [];
+    // Add errors to the above array to throw errors in Studio and Studio Pro.
+
+    // Rename properties are required when renaming is allowed
+    if (values.allowNodeRename) {
+        if (!values.renamedNodeIDAttr) {
+            errors.push({
+                property: "renamedNodeIDAttr",
+                message: "Renamed node ID is required when node renaming is allowed"
+            });
+        }
+        if (!values.newNodeNameAttr) {
+            errors.push({
+                property: "newNodeNameAttr",
+                message: "New node name is required when node renaming is allowed"
+            });
+        }
+        if (!values.onNodeRenamedAction) {
+            errors.push({
+                property: "onNodeRenamedAction",
+                message: "On node renamed action is required when node renaming is allowed"
+            });
+        }
+    }
+
+    if (values.allowDragReordering || values.allowDragMove) {
+        if (!values.draggedNodeIDsAttr) {
+            errors.push({
+                property: "draggedNodeIDsAttr",
+                message: "Dragged node IDs is required when drag/drop is allowed"
+            });
+        }
+        if (!values.dropTargetAttr) {
+            errors.push({
+                property: "dropTargetAttr",
+                message: "Drop target info is required when drag/drop is allowed"
+            });
+        }
+        if (!values.onDropAction) {
+            errors.push({
+                property: "onDropAction",
+                message: "On drop action is required when drag/drop is allowed"
+            });
+        }
+    }
+    return errors;
+}
 
 // /**
 //  * @param {object} values
