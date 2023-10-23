@@ -23,6 +23,11 @@ export function getProperties(values, defaultProperties, target) {
         hidePropertyIn(defaultProperties, values, "onDropAction");
     }
 
+    // Hide service response logging if logging is disabled
+    if (!values.logToConsole) {
+        hidePropertyIn(defaultProperties, values, "dumpServiceResponseInConsole");
+    }
+
     return defaultProperties;
 }
 
