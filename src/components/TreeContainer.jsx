@@ -127,12 +127,32 @@ export function TreeContainer({
         return items.every(item => item.data.parentID === firstParentID && item.canMove);
     }, []);
 
+    const canDropAtHandler = useCallback(
+        (items, target) => {
+            const targetNodeID = target.targetType === "between-items" ? target.parentItem : target.targetItem;
+            const targetNode = treeData.data[targetNodeID];
+
+            // Target does not specify accepted drag types so anything is allowed
+            if (!targetNode.data.acceptDragTypes) {
+                return true;
+            }
+
+            // Item can be dropped at the target if it has a drag type and the target accepts it.
+            // Note that the includes function is case sensitive!
+            // For performance, no case conversion is done, this is up to the developer that uses this widget.
+            return items.every(
+                item => !!item.data.dragType && targetNode.data.acceptDragTypes.includes(item.data.dragType)
+            );
+        },
+        [treeData?.data]
+    );
+
     useEffect(() => {
         const processDataFromService = data => {
             const createTreeDataObject = () => {
                 const newTreeData = {};
                 for (const node of data.nodes) {
-                    newTreeData[node.index] = {
+                    const nodeData = {
                         index: node.index,
                         isFolder: node.isFolder,
                         canMove: node.canMove,
@@ -142,9 +162,18 @@ export function TreeContainer({
                             parentID: node.parentID
                         }
                     };
+                    // Convert children from comma separated value into array
                     if (node.children) {
-                        newTreeData[node.index].children = node.children.split(",");
+                        nodeData.children = node.children.split(",");
                     }
+                    // Only include the drag/drop settings if they are set. Keeps node data object as small as possible
+                    if (node.dragType) {
+                        nodeData.data.dragType = node.dragType;
+                    }
+                    if (node.acceptDragTypes) {
+                        nodeData.data.acceptDragTypes = node.acceptDragTypes;
+                    }
+                    newTreeData[node.index] = nodeData;
                 }
                 return newTreeData;
             };
@@ -348,6 +377,7 @@ export function TreeContainer({
                 onSelectItems={onSelectionChangedHandler}
                 onRenameItem={onRenameNodeHandler}
                 canDrag={canDragHandler}
+                canDropAt={canDropAtHandler}
                 onDrop={onDropHandler}
             >
                 <Tree treeId={treeName} rootItem="root" />
