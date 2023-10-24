@@ -154,7 +154,7 @@ export function TreeContainer({
                 for (const node of data.nodes) {
                     const nodeData = {
                         index: node.index,
-                        isFolder: node.isFolder,
+                        isFolder: !!node.children,
                         canMove: node.canMove,
                         canRename: node.canRename,
                         data: {
