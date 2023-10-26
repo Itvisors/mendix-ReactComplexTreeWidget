@@ -39,7 +39,7 @@
                     <caption>Icon</caption>
                     <description></description>
                 </property>
-                <property key="collapseAllButtonClass" type="string" defaultValue="tree-widget-button-collapse-all mx-button">
+                <property key="collapseAllButtonClass" type="string" defaultValue="tree-widget-button-collapse-all btn mx-button">
                     <caption>Class</caption>
                     <description>Separate multiple values using a space</description>
                 </property>
@@ -60,7 +60,7 @@
                     <description></description>
                     <returnType type="String" />
                 </property>
-                <property key="expandAllButtonClass" type="string" defaultValue="tree-widget-button-expand-all mx-button">
+                <property key="expandAllButtonClass" type="string" defaultValue="tree-widget-button-expand-all btn mx-button">
                     <caption>Class</caption>
                     <description>Separate multiple values using a space</description>
                 </property>
