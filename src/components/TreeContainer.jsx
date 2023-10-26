@@ -7,6 +7,7 @@ export function TreeContainer({
     dataChangedDate,
     serviceUrl,
     widgetName,
+    widgetClassName,
     toggleExpandedIconOnly,
     allowNodeRename,
     allowDragReordering,
@@ -330,17 +331,19 @@ export function TreeContainer({
         expandedItems
     ]);
 
+    const className = "react-complex-tree-widget " + widgetClassName;
+
     if (!treeData?.data) {
         if (logToConsole) {
             logMessageToConsole("No tree data");
         }
-        return <div className="react-complex-tree-widget nodata"></div>;
+        return <div className={className + " nodata"}></div>;
     }
 
     const treeName = "tree-" + widgetName;
     const interactionMode = toggleExpandedIconOnly ? "click-arrow-to-expand" : "click-item-to-expand";
     return (
-        <div className="react-complex-tree-widget">
+        <div className={className}>
             <div className="tree-widget-button-container">
                 <button id="buttonCollapseAll" className={collapseAllButtonClass} onClick={onCollapseAllButtonClick}>
                     {collapseAllButtonIcon && <Icon icon={collapseAllButtonIcon} />}

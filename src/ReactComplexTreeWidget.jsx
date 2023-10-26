@@ -105,6 +105,7 @@ export function ReactComplexTreeWidget(props) {
             dataChangedDate={props.dataChangeDateAttr.value}
             serviceUrl={props.serviceUrl.value}
             widgetName={props.name}
+            widgetClassName={props.class}
             toggleExpandedIconOnly={props.toggleExpandedIconOnly}
             allowNodeRename={props.allowNodeRename}
             allowDragReordering={props.allowDragReordering}
