@@ -30,10 +30,9 @@
 
         <propertyGroup caption="Buttons">
             <propertyGroup caption="Collapse all">
-                <property key="collapseAllButtonCaption" type="expression" required="false">
+                <property key="collapseAllButtonCaption" type="textTemplate" required="false">
                     <caption>Caption</caption>
                     <description></description>
-                    <returnType type="String" />
                 </property>
                 <property key="collapseAllButtonIcon" type="icon" required="false">
                     <caption>Icon</caption>
@@ -55,10 +54,9 @@
                     <caption>Icon</caption>
                     <description></description>
                 </property>
-                <property key="expandAllButtonCaption" type="expression" required="false">
+                <property key="expandAllButtonCaption" type="textTemplate" required="false">
                     <caption>Caption</caption>
                     <description></description>
-                    <returnType type="String" />
                 </property>
                 <property key="expandAllButtonClass" type="string" defaultValue="tree-widget-button-expand-all btn mx-button">
                     <caption>Class</caption>
