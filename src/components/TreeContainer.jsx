@@ -291,9 +291,21 @@ export function TreeContainer({
             dataChangedDate: dataChangedDate
         });
 
-        if (serviceUrl) {
+        let serviceUrlLocal = serviceUrl;
+        if (serviceUrlLocal) {
+            if (!treeData?.data) {
+                if (logToConsole) {
+                    logMessageToConsole("No tree data, request full reload");
+                }
+                if (serviceUrlLocal.includes("?")) {
+                    serviceUrlLocal += "&";
+                } else {
+                    serviceUrlLocal += "?";
+                }
+                serviceUrlLocal += "fullreload=true";
+            }
             if (logToConsole) {
-                logMessageToConsole("Call service using URL: " + serviceUrl);
+                logMessageToConsole("Call service using URL: " + serviceUrlLocal);
             }
         } else {
             if (logToConsole) {
@@ -305,7 +317,7 @@ export function TreeContainer({
         // eslint-disable-next-line no-undef
         const token = mx.session.getConfig("csrftoken");
         window
-            .fetch(serviceUrl, {
+            .fetch(serviceUrlLocal, {
                 credentials: "include",
                 headers: {
                     "X-Csrf-Token": token,
@@ -318,7 +330,7 @@ export function TreeContainer({
                         processDataFromService(data);
                     });
                 } else {
-                    console.error("Call to URL " + serviceUrl + " failed: " + response.statusText);
+                    console.error("Call to URL " + serviceUrlLocal + " failed: " + response.statusText);
                 }
             });
     }, [

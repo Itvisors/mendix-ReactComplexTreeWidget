@@ -1,7 +1,7 @@
 {
   "name": "reactcomplextreewidget",
   "widgetName": "ReactComplexTreeWidget",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "React Complex Tree Widget",
   "copyright": "2023 Aiden",
   "author": "Marcel Groeneweg",
@@ -25,11 +25,11 @@
     "release": "pluggable-widgets-tools release:web"
   },
   "devDependencies": {
-    "@mendix/pluggable-widgets-tools": "^9.24.0",
+    "@mendix/pluggable-widgets-tools": "9.24.1",
     "mendix-client": "^7.15.8"
   },
   "dependencies": {
-    "react-complex-tree": "^2.2.2"
+    "react-complex-tree": "^2.3.4"
   },
   "resolutions": {
     "react": "18.2.0",
