@@ -1,6 +1,7 @@
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import { createElement, useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { Icon } from "mendix/components/web/Icon";
+import { getCSRFToken } from "mendix/session";
 import treeDataReducer from "../utils/treeDataReducer";
 
 export function TreeContainer({
@@ -315,7 +316,7 @@ export function TreeContainer({
         }
 
         // eslint-disable-next-line no-undef
-        const token = mx.session.getConfig("csrftoken");
+        const token = getCSRFToken();
         window
             .fetch(serviceUrlLocal, {
                 credentials: "include",
