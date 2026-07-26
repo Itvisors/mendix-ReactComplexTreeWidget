@@ -33,6 +33,8 @@ export function TreeContainer({
     const [expandedItems, setExpandedItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
 
+    const treeItems = treeData?.data;
+
     const onSelectionChangedHandler = useCallback(
         items => {
             const selectedIDs = items.join(",");
@@ -55,14 +57,14 @@ export function TreeContainer({
                 logMessageToConsole("onExpandItemHandler: called for item " + item.index);
             }
             // First set the state so the tree renders the expanded item
-            setExpandedItems([...expandedItems, item.index]);
+            setExpandedItems(prev => [...prev, item.index]);
 
             // The library has a missing child item callback but it does not work very well.
             // Item indeed has children
             if (item.children && item.children.length) {
                 const firstChildID = item.children[0];
                 // Request child nodes if not already available
-                if (!treeData.data[firstChildID]) {
+                if (!treeItems[firstChildID]) {
                     // Call handler with expanded item ID and its child IDs
                     const requestedIDs = item.index + "," + item.children.join(",");
                     if (logToConsole) {
@@ -72,7 +74,7 @@ export function TreeContainer({
                 }
             }
         },
-        [expandedItems, logMessageToConsole, logToConsole, onMissingNodes, treeData?.data]
+        [logMessageToConsole, logToConsole, onMissingNodes, treeItems]
     );
 
     const onCollapseAllButtonClick = useCallback(() => {
@@ -81,13 +83,13 @@ export function TreeContainer({
 
     const onExpandAllButtonClick = useCallback(() => {
         const expandableItemIDs = [];
-        for (const itemID in treeData.data) {
-            if (treeData.data[itemID].children) {
+        for (const itemID in treeItems) {
+            if (treeItems[itemID].children) {
                 expandableItemIDs.push(itemID);
             }
         }
         setExpandedItems(expandableItemIDs);
-    }, [treeData?.data]);
+    }, [treeItems]);
 
     const onRenameNodeHandler = useCallback(
         (item, newName) => {
@@ -132,7 +134,7 @@ export function TreeContainer({
     const canDropAtHandler = useCallback(
         (items, target) => {
             const targetNodeID = target.targetType === "between-items" ? target.parentItem : target.targetItem;
-            const targetNode = treeData.data[targetNodeID];
+            const targetNode = treeItems[targetNodeID];
 
             // Target does not specify accepted drag types so anything is allowed
             if (!targetNode.data.acceptDragTypes) {
@@ -146,7 +148,7 @@ export function TreeContainer({
                 item => !!item.data.dragType && targetNode.data.acceptDragTypes.includes(item.data.dragType)
             );
         },
-        [treeData?.data]
+        [treeItems]
     );
 
     useEffect(() => {
@@ -370,7 +372,7 @@ export function TreeContainer({
                 )}
             </div>
             <ControlledTreeEnvironment
-                items={treeData.data}
+                items={treeItems}
                 getItemTitle={item => item.data.name}
                 viewState={{
                     [treeName]: {
